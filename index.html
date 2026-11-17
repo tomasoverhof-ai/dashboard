@@ -88,6 +88,8 @@
     padding: 0 24px; gap: 12px; z-index: 99; transition: left .2s;
   }
   #sidebar.collapsed ~ #header { left: 56px; }
+  .header-club { font-weight: 700; font-size: 15px; }
+  .header-sep { color: var(--muted); }
   .header-page { font-weight: 600; font-size: 15px; }
   .header-badge {
     background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent);
@@ -123,6 +125,7 @@
   .kpi-row.cols-4 { grid-template-columns: repeat(4, 1fr); }
   .kpi-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
   .kpi-row.cols-6 { grid-template-columns: repeat(6, 1fr); }
+  .kpi-row.cols-5 { grid-template-columns: repeat(5, 1fr); }
   .kpi-card {
     background: var(--card-bg); border: 1px solid var(--border);
     border-radius: 12px; padding: 18px 20px;
@@ -146,12 +149,12 @@
   }
 
   /* ── Grid helpers ── */
+  .grid-2 > *, .grid-3 > *, .kpi-row > * { min-width: 0; }
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
 
   /* ── Chart containers ── */
-  .chart-wrap { position: relative; }
-  .chart-wrap canvas { max-height: 280px; }
+  .chart-wrap { position: relative; height: 280px; }
 
   /* ── Progress bar ── */
   .progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -159,7 +162,7 @@
   .progress-bar-wrap { flex: 1; height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
   .progress-bar-fill { height: 100%; border-radius: 4px; transition: width .4s; }
   .progress-pct { width: 40px; text-align: right; font-size: 12px; color: var(--text); }
-  .progress-val { width: 70px; text-align: right; font-size: 12px; color: var(--muted); }
+  .progress-val { min-width: 70px; white-space: nowrap; text-align: right; font-size: 12px; color: var(--muted); }
 
   /* ── Tables ── */
   .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -265,12 +268,16 @@
     #sidebar { width: 56px; }
     .logo-text, .nav-label, .nav-section-label, .sidebar-footer { display: none; }
     .kpi-row.cols-4 { grid-template-columns: repeat(2,1fr); }
-    .kpi-row.cols-6 { grid-template-columns: repeat(3,1fr); }
+    .kpi-row.cols-6, .kpi-row.cols-5 { grid-template-columns: repeat(3,1fr); }
     .grid-2 { grid-template-columns: 1fr; }
   }
   @media (max-width: 600px) {
     .kpi-row.cols-4, .kpi-row.cols-3 { grid-template-columns: repeat(2,1fr); }
-    .kpi-row.cols-6 { grid-template-columns: repeat(2,1fr); }
+    .kpi-row.cols-6, .kpi-row.cols-5 { grid-template-columns: repeat(2,1fr); }
+    .header-club, .header-sep { display: none; }
+    .progress-row { flex-wrap: wrap; row-gap: 4px; }
+    .progress-label { width: 100%; }
+    .progress-bar-wrap { min-width: 60px; }
     .grid-3 { grid-template-columns: 1fr; }
     #main { padding: 12px; }
   }
@@ -351,6 +358,7 @@
 
 <!-- Header -->
 <header id="header">
+  <div class="header-club">Almere City FC</div><span class="header-sep">/</span>
   <div class="header-page" id="header-page">Hoofddashboard</div>
   <div class="header-badge">2025–2026</div>
   <div class="header-date">18 mei 2026</div>
@@ -586,7 +594,7 @@
     </div>
     <div class="card">
       <div class="stadium-wrap">
-        <svg id="stadium-svg" viewBox="0 0 700 520" width="100%" style="max-width:680px;" xmlns="http://www.w3.org/2000/svg">
+        <svg id="stadium-svg" viewBox="60 5 580 430" width="100%" style="max-width:680px;" xmlns="http://www.w3.org/2000/svg">
           <!-- Pitch -->
           <rect x="170" y="110" width="360" height="260" rx="4" fill="#2a5a2a" stroke="#3a7a3a" stroke-width="1.5"/>
           <rect x="195" y="135" width="310" height="210" rx="2" fill="none" stroke="#3a7a3a" stroke-width="1"/>
@@ -608,8 +616,8 @@
           <text x="305" y="404" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">C2</text>
           <rect x="356" y="375" width="85" height="50" rx="4" fill="#22c55e" opacity=".85"/>
           <text x="398" y="404" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">C3</text>
-          <rect x="449" y="375" width="96" height="50" rx="4" fill="#3b82f6" opacity=".85"/>
-          <text x="497" y="404" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Uitvak</text>
+          <rect x="449" y="375" width="83" height="50" rx="4" fill="#3b82f6" opacity=".85"/>
+          <text x="490" y="404" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">Uitvak</text>
 
           <!-- West stand (left) -->
           <rect x="80" y="110" width="80" height="60" rx="4" fill="#a855f7" opacity=".85"/>
@@ -640,8 +648,10 @@
           <text x="580" y="82" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">BG1Biz</text>
           <rect x="80" y="378" width="80" height="47" rx="4" fill="#22c55e" opacity=".85"/>
           <text x="120" y="405" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">B</text>
-          <rect x="540" y="375" width="80" height="50" rx="4" fill="#ef4444" opacity=".85"/>
-          <text x="580" y="403" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">G2/G3</text>
+          <rect x="540" y="375" width="38" height="50" rx="4" fill="#ef4444" opacity=".85"/>
+          <text x="559" y="403" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">G2</text>
+          <rect x="582" y="375" width="38" height="50" rx="4" fill="#ef4444" opacity=".85"/>
+          <text x="601" y="403" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">G3</text>
 
           <!-- Additional corner/upper -->
           <rect x="170" y="15" width="80" height="34" rx="4" fill="#22c55e" opacity=".85"/>
@@ -657,7 +667,7 @@
 
           <!-- Occupancy labels on pitch -->
           <text x="350" y="228" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="13" font-weight="500">Yanmar Stadion</text>
-          <text x="350" y="248" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">Cap. 8.200 · Gem. 7.456 (91%)</text>
+          <text id="stadium-caption" x="350" y="248" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10">Cap. 8.200 · Gem. 7.456 (91%)</text>
         </svg>
 
         <div class="stadium-legend">
@@ -1152,7 +1162,12 @@
     </div>
   </div>
 
-  <div class="kpi-row cols-4" style="margin-bottom:20px;">
+  <div class="kpi-row cols-5" style="margin-bottom:20px;">
+    <div class="kpi-card">
+      <div class="kpi-label">Totale omzet</div>
+      <div class="kpi-value" style="font-size:20px;">€162K</div>
+      <div class="kpi-sub neg">Target: €300K · 54%</div>
+    </div>
     <div class="kpi-card">
       <div class="kpi-label">Op factuur</div>
       <div class="kpi-value" style="font-size:20px;">€48K</div>
@@ -1210,10 +1225,13 @@
 // ══════════════════════════════════════════
 // Chart defaults
 // ══════════════════════════════════════════
-Chart.defaults.color = '#8b8fa8';
-Chart.defaults.borderColor = 'rgba(255,255,255,0.07)';
-Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
-Chart.defaults.font.size = 11;
+const hasChart = typeof Chart !== 'undefined';
+if (hasChart) {
+  Chart.defaults.color = '#8b8fa8';
+  Chart.defaults.borderColor = 'rgba(255,255,255,0.07)';
+  Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+  Chart.defaults.font.size = 11;
+}
 
 const ACCENT = '#e63329';
 const POSITIVE = '#22c55e';
@@ -1328,6 +1346,7 @@ seats.forEach(s => {
 // Chart initialisation (lazy per page)
 // ══════════════════════════════════════════
 function mkChart(id, type, data, options) {
+  if (!hasChart) return;
   if (chartRegistry[id]) { chartRegistry[id].destroy(); }
   const canvas = document.getElementById(id);
   if (!canvas) return;
@@ -1379,17 +1398,17 @@ function initHoofdCharts() {
       }
     ]
   }, {
-    responsive: true, maintainAspectRatio: true,
+    responsive: true, maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
     plugins: {
       legend: { labels: { color: '#f0f0f0', boxWidth: 20 } },
-      tooltip: { callbacks: { label: ctx => ` €${(ctx.raw/1000).toFixed(0)}K` } }
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: €${(ctx.raw/1000).toFixed(2).replace('.',',')}M` } }
     },
     scales: {
       x: { grid: gridOpts() },
       y: {
         grid: gridOpts(),
-        ticks: { callback: v => `€${v/1000}K` }
+        ticks: { callback: v => `€${(v/1000).toFixed(1).replace('.',',')}M` }
       }
     }
   });
@@ -1403,7 +1422,7 @@ function initHoofdCharts() {
       hoverOffset: 6,
     }]
   }, {
-    responsive: true, maintainAspectRatio: true,
+    responsive: true, maintainAspectRatio: false,
     cutout: '65%',
     plugins: {
       legend: { position: 'right', labels: { color: '#f0f0f0', boxWidth: 14, padding: 10 } },
@@ -1472,7 +1491,7 @@ function initSponsoringCharts() {
       }
     ]
   }, {
-    responsive: true, maintainAspectRatio: true,
+    responsive: true, maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
     plugins: { legend: { labels: { color: '#f0f0f0', boxWidth: 20 } } },
     scales: {
@@ -1504,7 +1523,7 @@ function initEventsCharts() {
       hoverOffset: 6,
     }]
   }, {
-    responsive: true, maintainAspectRatio: true,
+    responsive: true, maintainAspectRatio: false,
     cutout: '55%',
     plugins: { legend: { position: 'right', labels: { color: '#f0f0f0', boxWidth: 12, padding: 8 } } }
   });
@@ -1519,12 +1538,18 @@ function initEventsCharts() {
 }
 
 // ── Horeca ──
+const horecaData = {
+  all:      [70, 190, 520, 1130, 2210, 1560, 890, 560, 270, 100],
+  match:    [80, 220, 640, 1420, 2800, 1960, 1100, 680, 320, 120],
+  nonmatch: [40, 110, 90, 60, 80, 140, 180, 150, 90, 30],
+};
+let horecaFilter = 'all';
 function initHorecaCharts() {
   mkChart('chart-horeca-tijdvak', 'bar', {
     labels: ['12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'],
     datasets: [{
       label: 'Bestellingen',
-      data: [80, 220, 640, 1420, 2800, 1960, 1100, 680, 320, 120],
+      data: horecaData[horecaFilter],
       backgroundColor: ACCENT,
       borderRadius: 4,
       borderWidth: 0,
@@ -1570,7 +1595,7 @@ function initMerchandiseCharts() {
       }
     ]
   }, {
-    responsive: true, maintainAspectRatio: true,
+    responsive: true, maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
     plugins: { legend: { labels: { color: '#f0f0f0', boxWidth: 20 } } },
     scales: {
@@ -1591,14 +1616,14 @@ function initMerchandiseCharts() {
 
 function barOpts(unit) {
   return {
-    responsive: true, maintainAspectRatio: true,
+    responsive: true, maintainAspectRatio: false,
     plugins: {
       legend: { labels: { color: '#f0f0f0', boxWidth: 16 } },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toLocaleString('nl-NL')} ${unit}` } }
+      tooltip: { callbacks: { label: ctx => unit === '€' ? ` ${ctx.dataset.label}: €${ctx.raw.toLocaleString('nl-NL')}` : ` ${ctx.raw.toLocaleString('nl-NL')} ${unit}` } }
     },
     scales: {
       x: { grid: gridOpts() },
-      y: { grid: gridOpts(), ticks: { callback: v => v >= 1000 ? `${(v/1000).toFixed(0)}K` : v } }
+      y: { grid: gridOpts(), ticks: { callback: v => v >= 1000 ? `${(v/1000).toLocaleString('nl-NL')}K` : v } }
     }
   };
 }
@@ -1608,7 +1633,34 @@ document.getElementById('horeca-toggle').addEventListener('click', e => {
   if (!e.target.classList.contains('toggle-btn')) return;
   document.querySelectorAll('#horeca-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
+  horecaFilter = e.target.dataset.filter;
+  const c = chartRegistry['chart-horeca-tijdvak'];
+  if (c) { c.data.datasets[0].data = horecaData[horecaFilter]; c.update(); }
 });
+
+// ── Stadion: kleur per bezetting, per wedstrijd ──
+const vakBezetting = { A1:94, A2:92, B:91, C1:93, C2:82, C3:91, D:78, E2:95, E3:91, FB:92, G2:66, G3:58, BE1:93, BE2:91, BE3:84, BG2:92, BG3:91 };
+const vakVast = { Uitvak:'#3b82f6', Business:'#a855f7', BT2Biz:'#a855f7', BT1Biz:'#a855f7', Pers:'#a855f7', BFBiz:'#a855f7', BG1Biz:'#a855f7', E4Biz:'#a855f7' };
+const wedstrijdDelta = [0, 7, 9, 9, -16];
+const wedstrijdCaption = ['Cap. 8.200 · Gem. 7.456 (91%)', 'Cap. 8.200 · 8.120 bezoekers (99%)', 'Cap. 8.200 · 8.200 bezoekers (100%)', 'Cap. 8.200 · 8.200 bezoekers (100%)', 'Cap. 8.200 · 5.180 bezoekers (76%)'];
+function kleurStadion(idx) {
+  document.querySelectorAll('#stadium-svg rect[opacity]').forEach(r => {
+    const naam = r.nextElementSibling.textContent.trim();
+    let tip = naam;
+    if (vakVast[naam]) { r.setAttribute('fill', vakVast[naam]); }
+    else {
+      const pct = Math.max(0, Math.min(100, vakBezetting[naam] + wedstrijdDelta[idx]));
+      r.setAttribute('fill', pct > 90 ? POSITIVE : pct >= 70 ? WARNING : DANGER);
+      tip = `${naam}: ${pct}% bezet`;
+    }
+    let t = r.querySelector('title');
+    if (!t) { t = document.createElementNS('http://www.w3.org/2000/svg', 'title'); r.appendChild(t); }
+    t.textContent = tip;
+  });
+  document.getElementById('stadium-caption').textContent = wedstrijdCaption[idx];
+}
+document.getElementById('stadium-select').addEventListener('change', e => kleurStadion(e.target.selectedIndex));
+kleurStadion(0);
 
 // ── Init first page charts ──
 setTimeout(() => initChartsForPage('hoofddashboard'), 100);
